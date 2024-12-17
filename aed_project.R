@@ -98,3 +98,33 @@ fviz_pca_biplot(pca,
 #                pointsize = 2,
 #                addEllipses = TRUE, 
 #                legend.title = "AgeGroup")
+
+# Algoritmo de classificação Naive Bayes
+# Classificar variáveis qualitativas
+set.seed(123456789) 
+s <- sample(1:nrow(abalone))
+Treino <- s[1:floor(0.75*nrow(abalone))]
+abalone_treino <- abalone[Treino,]
+abalone_teste <- abalone[-Treino,]
+
+# Estimação do modelo com a amostra de treino
+library(e1071)
+# sexo
+NBC_sex <- naiveBayes(abalone_treino[,2:9], abalone_treino$Sex)
+# ageGroup
+NBC_ageGroup <- naiveBayes(abalone_treino[,2:9], abalone_treino$AgeGroup)
+
+# Avaliação da fiabilidade do modelo com a amostra de teste
+# sexo
+NBC_sex.prob <- predict(NBC_sex, abalone_teste, type="raw")
+NBC_sex.class <- predict(NBC_sex, abalone_teste)
+library(caret)
+confusionMatrix(NBC_sex.class, abalone_teste$Sex)
+confusionMatrix(NBC_sex.class, abalone_teste$Sex, mode="prec_recall")
+# ageGroup
+NBC_ageGroup.prob <- predict(NBC_ageGroup, abalone_teste, type="raw")
+NBC_ageGroup.class <- predict(NBC_ageGroup, abalone_teste)
+library(caret)
+confusionMatrix(NBC_ageGroup.class, abalone_teste$AgeGroup)
+confusionMatrix(NBC_ageGroup.class, abalone_teste$AgeGroup, mode="prec_recall")
+
