@@ -22,8 +22,6 @@ KMO(abalone_af)
 # Overall MSA =  0.87 -> boa adequação à aplicação da análise fatorial
 # Todas as variáveis MSA >= 0.78 (boa)
 
-abalone_af<-abalone_af[,-4]
-
 # Número de componentes utilizadas, com referência à variância explicada
 pca <- princomp(abalone_af, cor=TRUE)
 summary(pca)
@@ -47,6 +45,7 @@ fviz_pca_biplot(pca)
 biplot(pca)
 
 # Distinguir sexo e ageGroup
+
 # Sexo
 boxplot(pca$scores[,1] ~ abalone$Sex)
 boxplot(pca$scores[,2] ~ abalone$Sex)
@@ -55,6 +54,7 @@ boxplot(pca$scores[,4] ~ abalone$Sex)
 boxplot(pca$scores[,5] ~ abalone$Sex)
 boxplot(pca$scores[,6] ~ abalone$Sex)
 boxplot(pca$scores[,7] ~ abalone$Sex)
+boxplot(pca$scores[,8] ~ abalone$Sex)
 pairs(pca$scores,
       col = abalone$Sex)
 fviz_pca_biplot(pca, 
@@ -79,6 +79,7 @@ boxplot(pca$scores[,4] ~ abalone$AgeGroup)
 boxplot(pca$scores[,5] ~ abalone$AgeGroup)
 boxplot(pca$scores[,6] ~ abalone$AgeGroup)
 boxplot(pca$scores[,7] ~ abalone$AgeGroup)
+boxplot(pca$scores[,8] ~ abalone$AgeGroup)
 pairs(pca$scores,
       col = abalone$AgeGroup)
 fviz_pca_biplot(pca, 
