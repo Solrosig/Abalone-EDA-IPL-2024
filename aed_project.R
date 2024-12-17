@@ -20,11 +20,7 @@ pairs(abalone_af, col=abalone$Sex)
 library(psych); 
 KMO(abalone_af)
 # Overall MSA =  0.87 -> boa adequação à aplicação da análise fatorial
-# Whole.weight = 0.78 (média)
-# vamos retirar e ver como se comporta 
-KMO(abalone_af[,-4])
-# Overall MSA =  0.91 -> adequação muito boa
-# Todas as variáveis MSA <= 0.85 (boa)
+# Todas as variáveis MSA >= 0.78 (boa)
 
 abalone_af<-abalone_af[,-4]
 
@@ -34,7 +30,7 @@ summary(pca)
 # Gráfico scree plot
 library(factoextra); 
 fviz_eig(pca, addlabels=TRUE)
-# vamos utilizar duas componentes, ficamos com 97.5% da informação (87.8+5.5)
+# vamos utilizar duas componentes, ficamos com 93.3% da informação (87.8+5.5)
 # pesos 
 pca$loadings
 pca$scores
