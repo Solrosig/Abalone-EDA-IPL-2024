@@ -96,6 +96,146 @@ fviz_pca_biplot(pca,
 #                addEllipses = TRUE, 
 #                legend.title = "AgeGroup")
 
+
+
+#3. Análise de Clusters
+
+#Variáveis quantitativas -> Length, Diameter, Height, Whole.Weight, Shucked.Weight, Viscera.Weight, Shell.Weight, Rings, Age
+
+
+#• a aplicação de um método hierárquico (apresentando o respetivo dendrograma);
+
+#Standardizar variáveis quantitativas
+
+abalone_s <- as.data.frame(scale(abalone[,2:10])) 
+abalone_s
+
+#Experimentação para descobrir o melhor dendrograma
+
+#"euclidean", "maximum", "manhattan", "minkowski", p= , . . .
+distance_matrix <- dist(abalone_s, "euclidean")
+distance_matrix2 <- dist(abalone_s, "manhattan")
+distance_matrix3 <- dist(abalone_s, "minkowski") #igual ao euclidean
+
+#"ward.D2", "single", "average", "complete", "centroid", . . .
+
+#Definição e representação do número de clusters por análise ao gráfico
+
+hc = hclust(distance_matrix, method="ward.D2")
+plot(hc, hang=-1);
+
+rect.hclust(hc, 2, border="red")
+rect.hclust(hc, 3, border="blue")
+
+hc2 = hclust(distance_matrix2, method="ward.D2")
+plot(hc2, hang=-1);
+
+rect.hclust(hc2, 2, border="red")
+rect.hclust(hc2, 3, border="blue")
+rect.hclust(hc2, 4, border="green")
+
+hc3 = hclust(distance_matrix3, method="ward.D2")
+plot(hc3, hang=-1);
+
+rect.hclust(hc3, 2, border="red")
+rect.hclust(hc3, 3, border="blue")
+
+library(cluster);
+
+cluster <- cutree(hc, 2)
+cluster2 <- cutree(hc2, 2)
+cluster3 <- cutree(hc3, 2)
+
+#Visto que o melhor valor obtido é conseguido com a utilização de 2 clusters,
+#representar graficamente no dendograma apenas a divisão por 2 clusters
+
+#Para justificar a escolha dos dois clusters, apresentar no relatório a 
+#comparação com valores de diferente número de clusters
+
+fviz_silhouette(silhouette(cluster, distance_matrix)) #0.47 com 2 clusters
+fviz_silhouette(silhouette(cluster2, distance_matrix2)) #0.47 com 2 clusters
+fviz_silhouette(silhouette(cluster3, distance_matrix3)) #0.47 com 2 clusters
+
+library(fpc);
+
+calinhara(abalone_s, cluster) #2 clusters: 598.3716
+calinhara(abalone_s, cluster2) #2 clusters: 466.5097
+calinhara(abalone_s, cluster3) #2 clusters: 598.3716
+
+
+calinhara(abalone_s, cluster) #3 clusters: 625.5605
+calinhara(abalone_s, cluster2) #3 clusters: 580.502
+calinhara(abalone_s, cluster3) #3 clusters: 625.5605
+
+#Nesta análise, 3 clusters obtém melhores valores do que 2
+
+#• a aplicação de um método não hierárquico (k-means);
+
+library(factoextra)
+#"wss", "silhouette"
+
+fviz_nbclust(abalone_s, kmeans, method = "wss") #4 clusters
+fviz_nbclust(abalone_s, kmeans, method = "silhouette") #2 clusters
+
+
+#Aplicação do k-means a 2 clusters:
+
+km2 <- kmeans(abalone_s, 2);
+print(km2)
+
+#Within cluster sum of squares by cluster:
+#  [1] 1181.9708  666.3329
+#(between_SS / total_SS =  58.8 %)
+
+
+km2$totss #dispersão total 4491
+km2$withinss #dispersão intra cluster
+#Cluster1: 1181.9708  
+#Cluster2: 666.3329
+
+km2$tot.withinss #dispersão intra total: 1848.304
+km2$betweenss #dispersão inter cluster: 2642.696
+
+km2$size
+#cluster 1: 277  individuos
+#cluster 2: 223 individuos
+
+
+#Aplicação do k-means a 4 clusters:
+
+km4 <- kmeans(abalone_s, 4);
+print(km4)
+
+#Within cluster sum of squares by cluster:
+#  [1] 272.4379 153.1390 364.5787 140.9963
+#(between_SS / total_SS =  79.3 %)
+
+
+km4$totss #dispersão total 4491
+km4$withinss #dispersão intra cluster
+#Cluster1: 272.4379   
+#Cluster2: 153.1390 
+#Cluster3: 364.5787 
+#Cluster4: 140.9963
+
+km4$tot.withinss #dispersão intra total: 931.1519
+km4$betweenss #dispersão inter cluster: 3559.848
+
+km4$size
+#cluster 1: 73 indivíduos
+#cluster 2: 140 indivíduos
+#Cluster 3: 190 indivíduos
+#Cluster 4: 97 indivíduos
+
+#• a justificação do número de clusters escolhido (em cada método);
+
+#Justificação feita no relatório
+
+
+#• a comparação dos grupos obtidos com os grupos definidos pelas variáveis qualitativas utilizadas na primeira questão.
+
+
+
 # Algoritmo de classificação Naive Bayes
 # Classificar variáveis qualitativas
 set.seed(123456789) 
