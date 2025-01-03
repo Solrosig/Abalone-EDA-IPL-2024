@@ -1,4 +1,7 @@
 #Preparação da base de dados
+# abalone$Age <- abalone$Rings+1.5
+# abalone$AgeGroup <- cut(abalone$Age, breaks=c(0,5,10,31), labels=c("Young", "Adult", "Old"))
+# abalone<-abalone[500,]
 abalone<-abalone[,-10]
 abalone$Sex<-factor(abalone$Sex)
 abalone$AgeGroup<-factor(abalone$AgeGroup)
