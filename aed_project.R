@@ -16,7 +16,7 @@ library(ggcorrplot)
 #1.1 A manipulação dos dados (preparação da base de dados para o tratamento estatístico)  
 
 abalone_raw2<-read.csv("abalone_raw.csv")
-str(abalone_raw2) #4177 amostrar, 9 variaveis
+str(abalone_raw2) #4177 amostras, 9 variaveis
 
 
 #A análise à existência de observações omissas;
@@ -34,6 +34,9 @@ abalone$Age <- abalone$Rings+1.5
 abalone$AgeGroup <- cut(abalone$Age, breaks=c(0,5,10,31), labels=c("Young", "Adult", "Old"))
 abalone$AgeGroup
 
+#Remover variavel age
+abalone<-abalone[,-10]
+
 #Converter as variáveis em fatores
 #variavel “AgeGroup”
 table(abalone$AgeGroup)
@@ -42,7 +45,7 @@ abalone$AgeGroup
 unique(abalone$AgeGroup) #verificar as categorias - "Young" "Adult" "Old"
 #variavel “Sex”
 table(abalone$Sex)
-abalone$Sex <- factor(abalone$Sex, levels = c("F", "I", "M"), labels = c("Female", "Infant", "Male"))
+abalone$Sex <- factor(abalone$Sex)
 abalone$Sex
 
 
@@ -62,8 +65,6 @@ save(abalone, file="abalonef.Rdata");
 #Variavel Quantitativa - Whole.weight: num, continuous ((grams)/ Whole abalone wheight
 
 colSums(is.na(abalone[, c("Sex", "AgeGroup", "Length", "Whole.weight")]))  # 0 missing values
-abalone<-abalone[, c("Sex", "AgeGroup", "Length", "Whole.weight")]
-abalone
 
 
 #1.3 a apresentação de tabelas, gráficos e medidas adequadas ao resumo da informação das 4 variáveis escolhidas para análise 
@@ -423,18 +424,22 @@ boxplot_peso_idade<-ggplot(abalone, aes(x = AgeGroup, y = Whole.weight)) +
   labs(title = "Comparação do Peso total de abalones por Grupos de idade", x = "Grupos de idade", y = "Peso total (gr)")
 boxplot_peso_idade
 
+#1.7
+t_sex_age <- table(abalone$AgeGroup, abalone$Sex)
+library(DescTools);ContCoef(t_sex_age);
+# 0.525 existe alguma associacao entre as variaveis 
+# alfa = 0.05
+#H0: variáveis AgeGroup e Sex são independentes
+#H1: variáveis AgeGroup e Sex não são independentes
+fisher.test(t_sex_age)
+# p-value < 2.2e-16 < 0.05 alfa, logo rejeitamos HO, existe evidencia estatistica que as variaveis nao sao independentes
 
+#1.8
+#Como testado anteriormente as variaveis quantitativas nao seguem a normalidade, logo nao podemos utilizar o metodo pearson
+names(abalone)
+cor(abalone[,c(2,5)], method = "spearman")
+# correlacao = 0.9783138, ha uma relacao monotona quando uma variavel aumenta a outra tambem aumenta
 
-
-
-
-#Preparação da base de dados
-# abalone$Age <- abalone$Rings+1.5
-# abalone$AgeGroup <- cut(abalone$Age, breaks=c(0,5,10,31), labels=c("Young", "Adult", "Old"))
-# abalone<-abalone[500,]
-abalone<-abalone[,-10]
-abalone$Sex<-factor(abalone$Sex)
-abalone$AgeGroup<-factor(abalone$AgeGroup)
 
 # ANÁLISE FATORIAL
 # Correlação entre variáveis
