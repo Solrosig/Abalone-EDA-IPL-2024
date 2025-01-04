@@ -253,7 +253,7 @@ sex_proportions
 #para a proporção de abalones do sexo:
 #a) Masculino
 abalone$SexM <- abalone$Sex == "M"
-prop.test(rev(table(abalone$SexM),
+prop.test(rev(table(abalone$SexM)),
           500,
           conf.level= 0.95, 
           correct = TRUE)
@@ -262,7 +262,7 @@ prop.test(rev(table(abalone$SexM),
 #para a proporção de abalones do sexo:
 #b) Feminino
 abalone$SexF <- abalone$Sex == "F"
-prop.test(rev(table(abalone$SexF),
+prop.test(rev(table(abalone$SexF)),
               500,
               conf.level= 0.95, 
               correct = TRUE)
@@ -271,7 +271,7 @@ prop.test(rev(table(abalone$SexF),
 #para a proporção de abalones do sexo:
 #b) Infant
 abalone$SexI <- abalone$Sex == "I"
-prop.test(rev(table(abalone$SexI),
+prop.test(rev(table(abalone$SexI)),
               500,
               conf.level= 0.95, 
               correct = TRUE)
