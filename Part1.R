@@ -9,6 +9,9 @@ library(corrplot)
 #install.packages("dplyr")
 #library(dplyr)
 
+library(car) # fow Q-Q plots
+
+
 #1.1 Data inspection and  selection of variables
 
 head(abalone)
@@ -64,6 +67,34 @@ shapiro.test(abalone$Length)
 shapiro.test(abalone$Whole.weight)
 #W = 0.96956, p-value = 1.123e-08
 
+# Alternative: Select quantitative variables for normality check
+norm_quant_vars <- abalone[, c("Length", "Whole.weight")]
+shapiro_length <- shapiro.test(norm_quant_vars$Length)
+shapiro_weight <- shapiro.test(norm_quant_vars$Whole.weight)
+
+cat("Shapiro-Wilk Test for Length var.")
+print(shapiro_length) #W = 0.95769, p-value = 8.657e-11
+cat("Shapiro-Wilk Test for Whole.weight var.")
+print(shapiro_weight) #W = 0.96956, p-value = 1.123e-08
+
+# Histograms
+par(mfrow = c(1, 1))  # Arrange plots in one row, two columns
+hist(quant_vars$Length, 
+     main = "Histogram of Length", 
+     xlab = "Length", 
+     col = "skyblue",
+     ylim = c(0, 100))
+hist(quant_vars$Whole.weight, 
+     main = "Histogram of Whole Weight", 
+     xlab = "Whole Weight", 
+     col = "lightgreen",
+     ylim = c(0, 100))
+
+# Q-Q Plots
+qqPlot(quant_vars$Length, main = "Q-Q Plot for Length")
+qqPlot(quant_vars$Whole.weight, main = "Q-Q Plot for Whole Weight")
+
+
 
 #1.6. Comparisons
 # Boxplot of Whole.weight across AgeGroup
@@ -77,7 +108,7 @@ ggplot(abalone, aes(x = AgeGroup, y = Whole.weight)) +
   labs(title = "Comparison of Whole Weight Across AgeGroup", x = "Age Group", y = "Whole Weight")
 
 
-#1.7.Independence Test - chi-square test for Sex and AgeGroup
+#1.7.Independence Test - chi-square test for nominal (Sex)  and ordinal (AgeGroup)
 
 table_sex_agegroup <- table(abalone$Sex, abalone$AgeGroup)
 chisq_test <- chisq.test(table_sex_agegroup)
