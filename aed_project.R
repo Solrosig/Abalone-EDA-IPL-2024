@@ -51,6 +51,7 @@ biplot(pca)
 
 # Sexo
 boxplot(pca$scores[,1] ~ abalone$Sex)
+# 1 componente permite discriminar parcialmente o sex I dos restantes
 boxplot(pca$scores[,2] ~ abalone$Sex)
 boxplot(pca$scores[,3] ~ abalone$Sex)
 boxplot(pca$scores[,4] ~ abalone$Sex)
@@ -62,22 +63,17 @@ pairs(pca$scores,
       col = abalone$Sex)
 fviz_pca_biplot(pca, 
                 fill.ind = abalone$Sex, 
-                pointshape = 21, 
+                pointshape = 21,
                 pointsize = 2,
                 addEllipses = TRUE, 
                 legend.title = "Sex")
-#Verificar pares de componentes
-#fviz_pca_biplot(pca, axe=c(1,4),
-#                fill.ind = abalone$Sex, 
-#                pointshape = 21, 
-#                pointsize = 2,
-#                addEllipses = TRUE, 
-#                legend.title = "Sex")
 
 # ageGroup
 boxplot(pca$scores[,1] ~ abalone$AgeGroup)
+# permite discrimanar Young e parcialmente Old e Adult
 boxplot(pca$scores[,2] ~ abalone$AgeGroup)
 boxplot(pca$scores[,3] ~ abalone$AgeGroup)
+# permite discriminar young dos restantes
 boxplot(pca$scores[,4] ~ abalone$AgeGroup)
 boxplot(pca$scores[,5] ~ abalone$AgeGroup)
 boxplot(pca$scores[,6] ~ abalone$AgeGroup)
@@ -87,17 +83,11 @@ pairs(pca$scores,
       col = abalone$AgeGroup)
 fviz_pca_biplot(pca, 
                 fill.ind = abalone$AgeGroup, 
+                axes = c(1,3),
                 pointshape = 21, 
                 pointsize = 2,
                 addEllipses = TRUE, 
                 legend.title = "AgeGroup")
-#Verificar pares de componentes
-#fviz_pca_biplot(pca, axes = c(1,3),
-#                fill.ind = abalone$AgeGroup, 
-#                pointshape = 21, 
-#                pointsize = 2,
-#                addEllipses = TRUE, 
-#                legend.title = "AgeGroup")
 
 
 
