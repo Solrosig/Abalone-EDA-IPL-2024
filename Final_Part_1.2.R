@@ -17,7 +17,7 @@ library(ggcorrplot)
 #1.1 A manipulação dos dados (preparação da base de dados para o tratamento estatístico)  
 
 abalone_raw2<-read.csv("abalone_raw.csv")
-str(abalone_raw2) #4177 amostrar, 9 variaveis
+str(abalone_raw2) #4177 amostras, 9 variaveis
 
 
 #A análise à existência de observações omissas;
@@ -67,9 +67,8 @@ abalone<-abalone[, c("Sex", "AgeGroup", "Length", "Whole.weight")]
 abalone
 
 
-#1.3 Descriptive Statistics
-#Summary of the selected variables
-
+#1.3 Análise geral 
+#Summary de variaveis escolhidas
 summary(abalone)
 
 # Length: Min.: 0.0750, 1st Qu.: 0.4387, Median: 0.5300, Mean: 0.5068, 3rd Qu.: 0.5950, Max.: 0.7450 
@@ -319,7 +318,7 @@ sd(abalone$Length)
 skewness(abalone$Length)
 
 boxplot(abalone$Length,
-        main = "Comprimento de abalones no Rio Lis",
+        main = "Comprimento de abalones",
         sub="Amostra de 500 individuos",
         xlab = "Comprimento (mm)",
         col="lightblue",
