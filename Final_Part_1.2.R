@@ -92,7 +92,7 @@ length_stats <- data.frame(
 )
 print(length_stats)
 
-#     Mean Median   Variance    StdDev     IQR   Skewness  Min    Max    Outliers 
+#  Mean    Median   Variance    StdDev     IQR   Skewness  Min    Max    Outliers 
 # 0.50679   0.53 0.01563171 0.1250268 0.15625 -0.7429347 0.075  0.745       10
 
 #Analise de extremos (mínimo e máximo), quartis, amplitude inter-quartis da variavel Length
@@ -126,7 +126,7 @@ boxplot.stats(abalone$Length)
 
 #Coeficiente de assimetria - skewness de comprimento (Length)
 skewness(abalone$Length) #-0.7429347
-#Histograma 
+#Histograma de comprimento
 hist(abalone$Length, main="Histograma do comprimento ", sub="Amostra de 500 individuos",
      xlab="Comprimento de abalones(mm)", ylab="Frequência", col="skyblue",breaks=6)
 
